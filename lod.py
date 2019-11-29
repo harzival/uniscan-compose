@@ -11,6 +11,9 @@ class Lod:
         self.tile_list = []
         self.parse_metadata(self.dir / "metadata.json")
 
+    def total_slices(self):
+        return (self.slices.x * self.slices.y * self.slices.z)
+
     def parse_metadata(self, metadata_path):
         if metadata_path.exists():
             with open(metadata_path, "r") as file:
@@ -18,14 +21,15 @@ class Lod:
                 min = json_dict["WorldBounds"]["MinCorner"]
                 max = json_dict["WorldBounds"]["MaxCorner"]
                 self.box = Box(
-                    Vec3(min["X"], min["Y"], min["Z"]),
-                    Vec3(max["X"], max["Y"], max["Z"]),
+                    Vec3(min["Y"], -min["X"], min["Z"]),
+                    Vec3(max["Y"], -max["X"], max["Z"]), #fuuuuuuuuuuuuuuuuuuuuuuuuu
                 )
                 setsize = json_dict["SetSize"]
-                self.slices = Vec3(setsize["X"], setsize["X"], setsize["X"])
+                self.slices = Vec3(setsize["X"], setsize["Y"], setsize["Z"])
                 tile_exists_list = json_dict["CubeExists"]
                 for tile in self.box.slice_into_tiles(self.slices):
                     if tile_exists_list[tile.pos.x][tile.pos.y][tile.pos.z]:
+                        tile.lod_dir_name = self.dir.name
                         self.tile_list.append(tile)
 
     @staticmethod

@@ -8,18 +8,35 @@ class Box:
         self.min = min
         self.max = max
 
+    def __iter__(self):
+        yield ("box", self.calc_bounding_volume_box())
+
     def is_inside(self, other):
         if self.min >= other.min and self.max <= other.max:
             return True
         else:
             return False
 
+    def get_center(self):
+        return Vec3(
+            (self.min.x + self.max.x) / 2.0,
+            (self.min.y + self.max.y) / 2.0,
+            (self.min.z + self.max.z) / 2.0
+        )
+
+    def calc_bounding_volume_box(self):
+        xd = abs(self.min.x - self.max.x) / 2
+        yd = abs(self.min.y - self.max.y) / 2
+        zd = abs(self.min.z - self.max.z) / 2
+        c = self.get_center()
+        return [c.x, c.y, c.z, xd, 0, 0, 0, yd, 0, 0, 0, zd]
+
     def slice_into_tiles(self, slices):
         def slice_1d(min, max, slices):
             slice_len = (max - min) / slices
             return [
-                [min + (slice * slice_len), min + (slice + 1) * slice_len]
-                for slice in range(slices)
+                [min + (s * slice_len), min + (s + 1) * slice_len]
+                for s in range(slices)
             ]
         return [
             Tile(

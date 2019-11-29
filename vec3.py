@@ -51,8 +51,6 @@ class Vec3(object):
     def __ne__(self, other):
         return not(self.__eq__(self, other))
 
-    def transform_axis_z_up(self):
-        x = self.x
-        y = -self.z
-        z = self.y
-        return super().__init__(x, y, z)
+    @classmethod
+    def axis_z_up(cls, point):
+        return cls(x=point.x, y=-point.z, z=point.y)
