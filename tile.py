@@ -3,13 +3,14 @@
 class Tile:
     def __init__(self, box, pos):
         self.box = box
+        self.geom_box = None
         self.pos = pos
         self.child_list = []
         self.lod_dir_name = None
         self.geom_error = None
 
     def __iter__(self):
-        yield ("boundingVolume", dict(self.box))
+        yield ("boundingVolume", dict(self.geom_box))
         yield ("geometricError", self.geom_error)
         yield ("content", {"uri": self.get_uri()})
         yield ("extras", {"name": self.get_name()})

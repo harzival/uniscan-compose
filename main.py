@@ -60,12 +60,13 @@ for lod in lod_list:
     for tile in lod.tile_list:
         b3dm_path = b3dm_root_path / lod.dir.name / tile.get_b3dm_name()
         tile.geom_error = geom_error_list[-1]
+        obj_path = lod.dir / tile.get_obj_name()
+        tile.geom_box = Box.from_obj_geometry(str(obj_path))
         if b3dm_path.exists():
             print(
                 "UNISCAN: The '.b3dm' of "+lod.dir.name+"/"+tile.get_name() +
                 " already exists in export location ("+str(b3dm_root_path)+")")
         else:
-            obj_path = lod.dir / tile.get_obj_name()
             amap_path = lod.dir / tile.get_albedo_map_name()
             nmap_path = lod.dir / tile.get_normal_map_name()
             converter.write_mtl_data(obj_path)
@@ -74,8 +75,8 @@ for lod in lod_list:
                 converter.obj_to_glb(obj_path, glb_path, amap_path, nmap_path)
                 converter.glb_to_b3dm(glb_path, b3dm_path)
 
-world_box = Box.from_joining_box_list([lod.box for lod in lod_list])
 tile_list = Lod.sort_lods_into_tile_tree(lod_list)
+world_box = Box.from_joining_box_list([tile.geom_box for tile in tile_list])
 root_tile = RootTile(world_box, tile_list, 10000, root_transform)
 tileset = Tileset("1.0", 100000, root_tile)
 with (b3dm_root_path / "tileset.json").open('w') as file:

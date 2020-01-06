@@ -21,8 +21,8 @@ class Lod:
                 min = json_dict["WorldBounds"]["MinCorner"]
                 max = json_dict["WorldBounds"]["MaxCorner"]
                 self.box = Box(
-                    Vec3(min["Y"], -min["X"], min["Z"]),
-                    Vec3(max["Y"], -max["X"], max["Z"]), #fuuuuuuuuuuuuuuuuuuuuuuuuu
+                    Vec3(min["X"], min["Y"], min["Z"]),
+                    Vec3(max["X"], max["Y"], max["Z"]),
                 )
                 setsize = json_dict["SetSize"]
                 self.slices = Vec3(setsize["X"], setsize["Y"], setsize["Z"])
@@ -34,6 +34,9 @@ class Lod:
 
     @staticmethod
     def sort_lods_into_tile_tree(lod_list):
+        # If there is only one LOD directory, return its tile list.
+        if len(lod_list) == 1:
+            return lod_list[0].tile_list
         child_tile_list = []
         for i, lod in reversed(list(enumerate(lod_list))):
             if (i == len(lod_list) - 1):

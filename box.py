@@ -24,6 +24,27 @@ class Box:
             (self.min.z + self.max.z) / 2.0
         )
 
+    def get_width(self):
+        return abs(self.min.x - self.max.x)
+
+    def get_depth(self):
+        return abs(self.min.y - self.max.y)
+
+    def get_height(self):
+        return abs(self.min.z - self.max.z)
+
+    def calc_corner_points(self, min, max):
+        return [
+            Vec3(min.x, min.y, min.z),  # Corner 1
+            Vec3(min.x, max.y, min.z),  # Corner 2
+            Vec3(min.x, min.y, max.z),  # Corner 3
+            Vec3(min.x, max.y, max.z),  # Corner 4
+            Vec3(max.x, min.y, min.z),  # Corner 5
+            Vec3(max.x, max.y, min.z),  # Corner 6
+            Vec3(max.x, min.y, max.z),  # Corner 7
+            Vec3(max.x, max.y, max.z),
+        ]
+
     def calc_bounding_volume_box(self):
         xd = abs(self.min.x - self.max.x) / 2
         yd = abs(self.min.y - self.max.y) / 2
@@ -52,6 +73,7 @@ class Box:
     def from_joining_box_list(cls, box_list):
         min = Vec3(0, 0, 0)
         max = Vec3(0, 0, 0)
+        print("hi2")
         for i, box in enumerate(box_list):
             if i == 0:
                 min = box.min
@@ -102,4 +124,4 @@ class Box:
                         min.y = vertex.y
                     if vertex.z < min.z:
                         min.z = vertex.z
-        return cls(min, max)
+        return cls(Vec3.axis_z_up(min), Vec3.axis_z_up(max))
