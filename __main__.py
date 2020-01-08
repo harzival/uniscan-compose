@@ -14,9 +14,9 @@ def main(args=None):
     obj_root_dir = Path(args.input)
     b3dm_root_path = Path(args.output)
     converter = Converter(
-        _obj2gltf_js_path=args.obj2gltf_js_path,
-        _3d_tiles_tools_js_path=args.3d_tiles_tools_js_path
-        _node_path=args.node_path)
+        _obj2gltf_js_path=args._obj2gltf_js_path,
+        _3d_tiles_tools_js_path=args._3d_tiles_tools_js_path,
+        _node_path=args._node_path)
     geom_error_list = [args.max_geom_error]
     geom_error_division_factor = args.geom_error_division_factor
     geom_error_list.append(geom_error_list[0] / geom_error_division_factor)

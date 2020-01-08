@@ -73,7 +73,6 @@ class Box:
     def from_joining_box_list(cls, box_list):
         min = Vec3(0, 0, 0)
         max = Vec3(0, 0, 0)
-        print("hi2")
         for i, box in enumerate(box_list):
             if i == 0:
                 min = box.min

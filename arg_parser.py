@@ -10,11 +10,13 @@ def get_parser():
     parser.add_argument(
         "input",
         type=str,
+        metavar="/path/to/input/obj/dir",
         help="Path to root of directory containing list of OBJ mesh files",
     )
     parser.add_argument(
         "output",
         type=str,
+        metavar="/path/to/output/tileset/dir",
         help="Path to directory where the output tilese"
         "t.json and .b3dm mesh files should placed",
     )
@@ -27,7 +29,7 @@ def get_parser():
     parser.add_argument(
         "-rt",
         "--root-transform",
-        dest="root_transform"
+        dest="root_transform",
         type=float,
         nargs=16,
         metavar=0,
@@ -42,7 +44,7 @@ def get_parser():
             64.3356267137516, 0,
             1215107.7612304366,
             -4736682.902037748,
-            4081926.095098698, 1]
+            4081926.095098698, 1],
         help="A transform on earth's surface specified with 16 f"
         "loats as per the 3D Tiles' standard's Transform",
         required=False,
@@ -50,8 +52,9 @@ def get_parser():
     parser.add_argument(
         "-o2gjs",
         "--obj2gltfjs",
-        dest="obj2gltf_js_path"
+        dest="_obj2gltf_js_path",
         type=str,
+        metavar="/path/to/obj2gltf/bin/obj2gltf.js",
         help="Path to the entrypoint js file in the obj2gltf"
         "NodeJS library",
         required=True,
@@ -59,8 +62,9 @@ def get_parser():
     parser.add_argument(
         "-3ttjs",
         "--3d-tiles-toolsjs",
-        dest="3d_tiles_tools_js_path"
+        dest="_3d_tiles_tools_js_path",
         type=str,
+        metavar="/path/to/3d-tiles-tools/tools/bin/3d-tiles-tools.js",
         help="Path to the entrypoint js file in the 3d-tiles-tools"
         "NodeJS library",
         required=True,
@@ -68,8 +72,9 @@ def get_parser():
     parser.add_argument(
         "-njs",
         "--nodejs-path",
-        dest="node_path"
+        dest="_node_path",
         type=str,
+        metavar="node",
         help="Path to the NodeJS runtime command. e.g. just 'node' on most systems.",
         required=False,
         default="node"
@@ -77,8 +82,9 @@ def get_parser():
     parser.add_argument(
         "-mge",
         "--max-geom-error",
-        dest="max_geom_error"
+        dest="max_geom_error",
         type=float,
+        metavar=100000,
         help="The geometric error for the unrendered tileset, which"
         " is divided by the geometric error division factor for each"
         " level detail. e.g. '--max-geom-error 100000"
@@ -90,8 +96,9 @@ def get_parser():
     parser.add_argument(
         "-gedf",
         "--geom-error-division-factor",
-        dest="geom_error_division_factor"
+        dest="geom_error_division_factor",
         type=float,
+        metavar=10,
         help="The geometric error division factor for each"
         " level detail. e.g. '--max-geom-error 100000"
         " --geom-error-division-factor 10' causes Tileset: 100000,"
@@ -102,8 +109,9 @@ def get_parser():
     parser.add_argument(
         "-tv",
         "--tileset-version",
-        dest="tileset_version"
+        dest="tileset_version",
         type=str,
+        metavar="1.0",
         help="The tileset 'asset' version to use in the resulting tileset.json",
         required=False,
         default="1.0"
